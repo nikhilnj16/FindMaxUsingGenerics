@@ -1,21 +1,19 @@
 package com.bridgelabz.Generic;
 
-public class Testmaximum <E extends Comparable<E>> {
-    E value1;
-    E value2;
-    E value3;
+import java.util.*;
 
-    public Testmaximum(E value1, E value2, E value3) {
-        this.value1 = value1;
-        this.value2 = value2;
-        this.value3 = value3;
+public class Testmaximum <E extends Comparable<E>> {
+    private List<E> values;
+
+    public Testmaximum(E... values) {
+        this.values = Arrays.asList(values);
     }
 
     public static void main(String[] args) {
 
-        Testmaximum <Integer> FMInt = new Testmaximum<>(54, 34, 87);
+        Testmaximum <Integer> FMInt = new Testmaximum<>(54, 34, 87, 45, 56);
         FMInt.testmax();
-        Testmaximum <Float> FMFloat = new Testmaximum<>(3.4f, 5.6f, 1.2f);
+        Testmaximum <Float> FMFloat = new Testmaximum<>(3.4f, 5.6f, 1.2f, 3.5f);
         FMFloat.testmax();
         Testmaximum <String> FMString = new Testmaximum<>("Apple", "Guaua", "Banana");
         FMString.testmax();
@@ -23,19 +21,22 @@ public class Testmaximum <E extends Comparable<E>> {
     }
 
     public void testmax() {
-        E result = findMax();
-        System.out.println("max value: " + result);
+
+        Optional<E> result = findMax();
+        if (result.isPresent()) {
+            System.out.println("max value: " + result.get());
+        }
+        else {
+            System.out.println("NO VALUES PROVIDED.");
+        }
     }
 
-    private E findMax() {
-        E max = value1;
-        if (max.compareTo(value2) < 0){
-            max = value2;
+    private Optional<E> findMax() {
+        if (values.isEmpty()){
+            return Optional.empty();
         }
-        if (max.compareTo(value3) < 0) {
-            max = value3;
-        }
-        return max;
+        Collections.sort(values);
+        return Optional.of(values.get(values.size() - 1));
     }
 
     /*private static Float findMaxFloat(Float num1, Float num2, Float num3) {
